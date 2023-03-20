@@ -1,7 +1,8 @@
+import qs from 'qs';
 import request from '@/utils/request';
 
 const loginApi={
-  userLogin: '/api/auth/user/login',
+  userLogin: '/api/auth/oauth/token',
   userRegister:'/api/auth/user/register',
   sendCaptcha:'/api/auth/email/sendCaptcha',
   forgetPassword:'/api/auth/email/forgot-password',
@@ -19,8 +20,13 @@ class Service{
       url: loginApi.userLogin,
       method: 'POST',
       json: true,
-      data
+      data:qs.stringify(data),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic d2ViX2Zyb250OndlYl9mcm9udA=='
+      }
     }).then((res) => {
+      console.log('123')
       if (res.status === 0) {
       return Promise.resolve(res)
       }
@@ -31,19 +37,19 @@ class Service{
   /**
    * @descript POST  用户注册
   */
-      static postRegister(data: any) {
-        return request({
-          url: loginApi.userRegister,
-          method: 'POST',
-          json: true,
-          data
-        }).then((res) => {
-          if (res.status === 0) {
-            return Promise.resolve(res)
-          }
-          return Promise.reject(res)
-        })
+  static postRegister(data: any) {
+    return request({
+      url: loginApi.userRegister,
+      method: 'POST',
+      json: true,
+      data
+    }).then((res) => {
+      if (res.status === 0) {
+        return Promise.resolve(res)
       }
+      return Promise.reject(res)
+    })
+  }
 
  /**
    * @description   POST 发送验证码 /auth/email/sendCaptcha

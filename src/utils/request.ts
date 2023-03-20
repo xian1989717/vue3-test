@@ -15,24 +15,24 @@ interface IAxiosData {
 
 // const baseURL = 'http://www.mock.com'
 const axios = Axios.create({
-  // baseURL,
+  baseURL:'http://121.36.17.224:32568',
   timeout: 20000
 })
 // 允许携带cookie
 axios.defaults.withCredentials = true
 // 请求头信息
-axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'
-// 默认使用 application/json 形式
-axios.defaults.headers.post['Content-Type'] = 'application/json'
+// axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'
+// // 默认使用 application/json 形式
+// axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 // 请求拦截器
 axios.interceptors.request.use(
-  (config:AxiosRequestConfig) => {
-    if (sessionStorage.getItem("accessToken")) {
-      config.headers.Authorization = `Bearer ${sessionStorage.getItem("accessToken")}`;
-    }
-    return config;
-  },
+  (config:AxiosRequestConfig) => 
+    // if (sessionStorage.getItem("accessToken")) {
+    //   config.headers.Authorization = `Bearer ${sessionStorage.getItem("accessToken")}`;
+    // }
+     config
+  ,
   (err) => Promise.reject(err)
 )
 
@@ -63,21 +63,12 @@ axios.interceptors.response.use(
  */
 export default function request(arr: IAxiosData) {
   return new Promise<any>((resolve, reject) => {
-    // arr = requestValidate(arr)
+    console.log(arr)
     axios({
       timeout: arr.timeout === undefined ? 10000 : arr.timeout, // 请求超时时间
       url: arr.url,
       method: arr.method || 'POST',
-      headers: {
-
-        // 'Authorization': arr.token || '',
-        // eslint-disable-next-line no-nested-ternary
-        'content-type': arr.contentType
-          ? arr.contentType
-          : arr.json
-            ? 'application/json; charset=UTF-8'
-            : 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
+      headers: arr.headers || {},
       params: arr.params || '',
       data: arr.data || '',
       responseType: arr.responseType || 'json'

@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import { store } from '../store'
 import layout from '../layout/index.vue'
 // 静态路由
@@ -73,7 +73,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 // 异步路由
 export const asyncRoutes: Array<RouteRecordRaw> = []
 const router = createRouter({
-  history: createWebHashHistory(), // hash模式：createWebHashHistory，history模式：createWebHistory
+  history: createWebHistory(), // hash模式：createWebHashHistory，history模式：createWebHistory
   scrollBehavior: () => ({
     top: 0
   }),

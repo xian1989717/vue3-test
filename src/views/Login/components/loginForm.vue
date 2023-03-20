@@ -49,6 +49,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, toRefs, reactive } from 'vue'
+import JSEncrypt from 'jsencrypt/bin/jsencrypt.min.js'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { encrypt } from '@/utils/aes' // aes 密码加密
@@ -122,11 +123,15 @@ export default defineComponent({
         { min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur' }
       ],
       checkPass: [{ validator: validatePass2, trigger: 'blur' }],
-      email: [
-        { required: true, message: '请输入注册邮箱', trigger: 'change' },
-        { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-      ],
       capcha: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
+    }
+
+    const getRsaCode = (str: string): string => {
+      const pubKey =
+        'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwCnVHvf2gjJgKr1BPDs3nmdr6DzBF/SNU/RAGqTP1wdRnMURJJH+zPvePMsDYxPwFXWJfE/ouR9K6WhYuy7QztY4mZ2a2emnZuLuRzrIED/zT6E4MryXTghM1B6zWod6gl1TRs1+4OGV9uHc6QK27CShCHFHEE2vyTKkxXPdTuFPPiA9saJb6xkGq9YzueJ1J237zd56Uyx2d01IXUQBYt59xs+xkQk53ZRwFSZ/AmIZtHGz2mGMic9KNqkGuqzXQe28hgN+8oGJDT653diWE8a/pTXbxa7JQ0MxOlZ+OgPNCR8tGwtAT8W4WR8DIW8T5mA5uzpvFLo+XSK0ltbgTwIDAQAB' // ES6 模板字符串 引用 rsa 公钥
+      const encryptStr = new JSEncrypt()
+      encryptStr.setPublicKey(pubKey) // 设置 加密公钥
+      return encryptStr.encrypt(str.toString()) // 进行加密
     }
 
     // methods
@@ -141,8 +146,9 @@ export default defineComponent({
           try {
             const { email, password } = state.loginForm
             const data = {
-              email,
-              password: encrypt(password)
+              username: email,
+              password: getRsaCode(password),
+              grant_type: 'captcha'
             }
             const res = await Service.postLogin(data)
             const userInfo = await Service.postAuthUserInfo({ email })
