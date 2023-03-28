@@ -15,7 +15,7 @@ interface IAxiosData {
 
 // const baseURL = 'http://www.mock.com'
 const axios = Axios.create({
-  baseURL:'http://121.36.17.224:32568',
+  baseURL:'http://ylq.yxtdh.cn/test-gis',
   timeout: 20000
 })
 // 允许携带cookie
@@ -27,12 +27,13 @@ axios.defaults.withCredentials = true
 
 // 请求拦截器
 axios.interceptors.request.use(
-  (config:AxiosRequestConfig) => 
-    // if (sessionStorage.getItem("accessToken")) {
-    //   config.headers.Authorization = `Bearer ${sessionStorage.getItem("accessToken")}`;
-    // }
-     config
-  ,
+  (config:AxiosRequestConfig) => {
+    const token = sessionStorage.getItem('accessToken')
+    if(token && config.headers && config.url !== 'auth/oauth/token'){
+      config.headers.accessToken = token
+    }
+    return config
+  },
   (err) => Promise.reject(err)
 )
 
@@ -99,16 +100,6 @@ export default function request(arr: IAxiosData) {
             reject(response.data)
             return
           }
-          // if (response.data.code === '401') {
-          //   Message({
-          //     type: 'error',
-          //     message: response.data.message
-          //   });
-          //   reject(response.data);
-          //   remove('token');
-          //   router.push('/login');
-          //   return;
-          // }
 
           resolve(response.data)
         } else {

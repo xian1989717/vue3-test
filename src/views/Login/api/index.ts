@@ -8,7 +8,7 @@ const loginApi={
   forgetPassword:'/api/auth/email/forgot-password',
   resetPassword:`/api/auth/user/reset-password`,
   permissionRoutes:'/api/auth/permission/routes',
-  userInfo:'/api/auth/user/userInfo'
+  userInfo:'/api/user/employee/current'
 }
 
 class Service{
@@ -26,9 +26,8 @@ class Service{
         'Authorization': 'Basic d2ViX2Zyb250OndlYl9mcm9udA=='
       }
     }).then((res) => {
-      console.log('123')
-      if (res.status === 0) {
-      return Promise.resolve(res)
+      if (res) {
+        return Promise.resolve(res)
       }
       return Promise.reject(res)
     })
@@ -54,7 +53,7 @@ class Service{
  /**
    * @description   POST 发送验证码 /auth/email/sendCaptcha
   */
-   static postCaptcha(data: any) {
+  static postCaptcha(data: any) {
     return request({
       url: loginApi.sendCaptcha,
       method: 'POST',
@@ -71,7 +70,7 @@ class Service{
   /**
    * @description POST 忘记密码接口
   */
-   static postForgetPwd(data: any) {
+  static postForgetPwd(data: any) {
     return request({
       url: loginApi.forgetPassword,
       method: 'POST',
@@ -88,7 +87,7 @@ class Service{
   /**
    * @description /auth/user/reset-password/{token}
   */
-   static postResetPwd(data: any) {
+  static postResetPwd(data: any) {
     return request({
       url: loginApi.resetPassword,
       method: 'POST',
@@ -102,42 +101,56 @@ class Service{
     })
   }
 
-    /**
-   * @description POST 保存授权菜单权限
+  /**
+  * @description POST 保存授权菜单权限
   */
-     static postAuthPermission(data: any) {
-      return request({
-        url: loginApi.permissionRoutes,
-        method: 'POST',
-        json: true,
-        data
-      }).then((res) => {
-          console.log(res);
-        if (res.status === 0) {
-        return Promise.resolve(res)
-        }
-        return Promise.reject(res)
-      })
-    }
+  static postAuthPermission(data: any) {
+    return request({
+      url: loginApi.permissionRoutes,
+      method: 'POST',
+      json: true,
+      data
+    }).then((res) => {
+      if (res.status === 0) {
+      return Promise.resolve(res)
+      }
+      return Promise.reject(res)
+    })
+  }
 
     /**
      * @description POST 查询用户信息
     */
 
-     static postAuthUserInfo(data: any) {
-      return request({
-        url: loginApi.userInfo,
-        method: 'POST',
-        json: true,
-        data
-      }).then((res) => {
-        if (res.status === 0) {
-        return Promise.resolve(res)
-        }
-        return Promise.reject(res)
-      })
-    }
+  static postAuthUserInfo(data: any) {
+    return request({
+      url: loginApi.userInfo,
+      method: 'POST',
+      json: true,
+      data
+    }).then((res) => {
+      if (res.status === 0) {
+      return Promise.resolve(res)
+      }
+      return Promise.reject(res)
+    })
+  }
 
+  /**
+   * 
+   */
+  static getUserInfo(){
+    return request({
+      url:loginApi.userInfo,
+      method:'GET',
+      json: true,
+    }).then(res=>{
+      if(res.code === '0'){
+        return Promise.resolve(res)
+      }
+      return Promise.reject(res)
+    })
+  }
 }
 export default Service
 

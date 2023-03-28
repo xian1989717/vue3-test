@@ -151,19 +151,21 @@ export default defineComponent({
               grant_type: 'captcha'
             }
             const res = await Service.postLogin(data)
-            const userInfo = await Service.postAuthUserInfo({ email })
 
-            const accessToken = res?.data?.accessToken ?? null
+            const accessToken = res.value || null
             if (accessToken) {
-              // 将角色存储到全局vuex roles
-              if (userInfo.status === 0) {
-                store.dispatch('permissionModule/getPermissonRoles', userInfo.data)
+              sessionStorage.setItem('accessToken', accessToken)
+
+              const userInfo = await Service.getUserInfo()
+              console.log(userInfo)
+              if (userInfo.data) {
+                store.commit('SET_OTH_USER_INFO', res)
               }
               // 先进行异步路由处理
               store.dispatch('permissionModule/getPermissonRoutes', userInfo.data)
               store.dispatch('permissionModule/getPermissions')
               sessionStorage.setItem('auth', 'true')
-              sessionStorage.setItem('accessToken', accessToken)
+
               if (route.query.redirect) {
                 const path = route.query.redirect
                 router.push({ path: path as string })
