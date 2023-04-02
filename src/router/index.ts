@@ -90,10 +90,8 @@ router.beforeEach((to, from, next) => {
   if (sessionStorage.getItem('auth')) {
     next()
   } else if (to.path === '/login') {
-    console.log('/login')
     next()
   } else {
-    console.log('unauthed into login')
     next({
       path: '/login',
       query: { redirect: to.fullPath }

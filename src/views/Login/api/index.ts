@@ -8,7 +8,8 @@ const loginApi={
   forgetPassword:'/api/auth/email/forgot-password',
   resetPassword:`/api/auth/user/reset-password`,
   permissionRoutes:'/api/auth/permission/routes',
-  userInfo:'/api/user/employee/current'
+  userInfo:'/api/user/employee/current',
+  dynamicRoutes:'/api/user/permission/dynamicRoutes'
 }
 
 class Service{
@@ -149,6 +150,21 @@ class Service{
         return Promise.resolve(res)
       }
       return Promise.reject(res)
+    })
+  }
+
+  static getDynamicRoutes(data: object){
+    return request({
+      url:loginApi.dynamicRoutes,
+      method:'GET',
+      json:true,
+      data
+    }).then(res => {
+      if(res.code === '0'){
+        return Promise.resolve(res.data)
+      }
+      return Promise.reject(res.data)
+
     })
   }
 }

@@ -157,13 +157,16 @@ export default defineComponent({
               sessionStorage.setItem('accessToken', accessToken)
 
               const userInfo = await Service.getUserInfo()
-              console.log(userInfo)
               if (userInfo.data) {
-                store.commit('SET_OTH_USER_INFO', res)
+                store.commit('permissionModule/SET_OTH_USER_INFO', userInfo.data)
               }
+              const dynamicRoutes = await Service.getDynamicRoutes({
+                tenantId: 1
+              })
+              store.commit('permissionModule/setAccessRoutes', dynamicRoutes)
               // 先进行异步路由处理
-              store.dispatch('permissionModule/getPermissonRoutes', userInfo.data)
-              store.dispatch('permissionModule/getPermissions')
+              // store.dispatch('permissionModule/getPermissonRoutes', userInfo.data)
+              // store.dispatch('permissionModule/getPermissions')
               sessionStorage.setItem('auth', 'true')
 
               if (route.query.redirect) {

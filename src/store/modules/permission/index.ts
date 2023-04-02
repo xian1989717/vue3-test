@@ -15,12 +15,12 @@ const permissionModule: Module<permissionStateTypes, RootStateTypes> = {
     permissions:[], // 用户指定局部操作权限
     accessRoutes: constantRoutes, // 可访问路由集合
     routes:constantRoutes, // 所有路由集合
-    authedRoutes:[]
+    authedRoutes:[],
+    user:{}
   },
   mutations: {
     setRoles: (state: permissionStateTypes, {roleName}) => {
       state.roles = roleName;
-      console.log(state.roles);
     },
     setAccessRoutes: (state:permissionStateTypes, routes) => {
       state.accessRoutes = constantRoutes.concat(routes);
@@ -35,6 +35,9 @@ const permissionModule: Module<permissionStateTypes, RootStateTypes> = {
     },
     setPermissions:(state:permissionStateTypes,permissions:string[])=>{
       state.permissions = permissions
+    },
+    SET_OTH_USER_INFO:(state:permissionStateTypes,user:object)=>{
+      state.user = user
     }
   },
   actions: {
@@ -68,7 +71,6 @@ const permissionModule: Module<permissionStateTypes, RootStateTypes> = {
             }
           });
           router.options.routes = constantRoutes.concat(asyncRoutes);
-          console.log(router);
           commit('setAccessRoutes', accessedRoutes);
         });
       })
@@ -84,25 +86,24 @@ const permissionModule: Module<permissionStateTypes, RootStateTypes> = {
 
     getRoutes({ commit }) {
       // api request
-           // 动态添加路由  vue-router4.x 暂时没有addRoutes
-           if(localStorage.getItem("authedRoutes")){
-            const authedRoutes=JSON.parse(localStorage.getItem("authedRoutes") as string);
-            const accessedRoutes: RouteRecordRaw[]=[]
-            for(const path of authedRoutes){
-              for (const item of asyncRoutes){
-                if(item.path===path){
-                  accessedRoutes.push(item);
-                }
-              }
-            }
-            accessedRoutes.forEach((route: RouteRecordRaw)=>{
-              const routeName: any = route.name;
-              if (!router.hasRoute(routeName)) {
-                router.addRoute(route);
-              }
-            });
-           }
-
+      // 动态添加路由  vue-router4.x 暂时没有addRoutes
+      if(localStorage.getItem("authedRoutes")){
+      const authedRoutes=JSON.parse(localStorage.getItem("authedRoutes") as string);
+      const accessedRoutes: RouteRecordRaw[]=[]
+      for(const path of authedRoutes){
+        for (const item of asyncRoutes){
+          if(item.path===path){
+            accessedRoutes.push(item);
+          }
+        }
+      }
+      accessedRoutes.forEach((route: RouteRecordRaw)=>{
+        const routeName: any = route.name;
+        if (!router.hasRoute(routeName)) {
+          router.addRoute(route);
+        }
+      });
+      }
       commit('setRoutes', asyncRoutes);
     },
       // 授权角色
@@ -127,7 +128,6 @@ const permissionModule: Module<permissionStateTypes, RootStateTypes> = {
       return state.permissions;
 
     }
-
   },
 };
 export default permissionModule;

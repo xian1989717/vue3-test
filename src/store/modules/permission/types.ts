@@ -7,6 +7,7 @@ export default interface permissionStateTypes {
     permissions:String[]
     accessRoutes: Array<RouteRecordRaw>
     routes:Array<RouteRecordRaw>
-    authedRoutes:String[]
+    authedRoutes:String[],
+    user:Object
   // eslint-disable-next-line semi
   }

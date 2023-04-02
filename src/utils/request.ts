@@ -64,7 +64,6 @@ axios.interceptors.response.use(
  */
 export default function request(arr: IAxiosData) {
   return new Promise<any>((resolve, reject) => {
-    console.log(arr)
     axios({
       timeout: arr.timeout === undefined ? 10000 : arr.timeout, // 请求超时时间
       url: arr.url,

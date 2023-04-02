@@ -26,13 +26,11 @@ declare type elType=(string | Element | NodeListOf<Element> ) & elNode
               action() { return binding.arg === 'cut' ? 'cut' : 'copy' }
             })
             clipboard.on('success', (e:ClipBoard.Event) => {
-              console.log(e);
               const callback = el.vClipSuccess
               // eslint-disable-next-line no-unused-expressions
               callback && callback(e)
             })
             clipboard.on('error', (e:ClipBoard.Event) => {
-              console.log(e);
               const callback = el.vClipFailure
               // eslint-disable-next-line no-unused-expressions
               callback && callback(e)

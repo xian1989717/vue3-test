@@ -53,7 +53,6 @@ export default defineComponent({
       jsonEditor.setValue(JSON.stringify(props.modelValue, null, 2))
       // "changes" (instance: CodeMirror, changes: array<object>) Fires every time the content of the editor is changed.This event is fired after the operation finished
       jsonEditor.on('change', (cm: { getValue: () => any }) => {
-        console.log('ssss')
         emit('changed', cm.getValue())
         emit('input', cm.getValue())
       })
@@ -85,7 +84,7 @@ export default defineComponent({
     min-height: 300px;
 
     .CodeMirror-code {
-      text-align :left;
+      text-align: left;
     }
 
     .CodeMirror-scroll {

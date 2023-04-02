@@ -19,7 +19,6 @@ export default {
       const permissionRoles = value
 
       const hasPermission = permissions.some((role: any) => permissionRoles.includes(role))
-      console.log('value is', hasPermission)
 
       if (!hasPermission) {
         // eslint-disable-next-line no-unused-expressions

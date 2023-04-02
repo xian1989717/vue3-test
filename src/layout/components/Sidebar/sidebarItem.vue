@@ -4,28 +4,21 @@
     <template v-if="hasOneShowingChild(item.children, item)">
       <el-menu-item :key="onlyOneChild.path" :index="onlyOneChild.path" :route="onlyOneChild.path">
         <i :class="onlyOneChild.meta.icon"></i>
-        <template #title>{{ onlyOneChild.meta.title[lang] }}</template>
+        <template #title>{{ onlyOneChild.meta.title }}</template>
       </el-menu-item>
     </template>
     <el-sub-menu v-else ref="subMenu" :index="item.path" popper-append-to-body>
       <template #title>
-        <i :data-index='item.path' :class="item.meta.icon"></i>
-        <span>{{ item.meta.title[lang] }}</span>
+        <i :data-index="item.path" :class="item.meta.icon"></i>
+        <span>{{ item.meta.title }}</span>
       </template>
       <!--children 进行递归调用自身组件-->
-      <sidebar-item
-        v-for="child in item.children"
-        :key="child.path"
-        :is-nest="true"
-        :item="child"
-        :base-path="child.path"
-        class="nest-menu"
-      />
+      <sidebar-item v-for="child in item.children" :key="child.path" :is-nest="true" :item="child" :base-path="child.path" class="nest-menu" />
     </el-sub-menu>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, ref, toRef, computed } from 'vue'
+import { defineComponent, onMounted, ref, computed } from 'vue'
 import { useStore } from '@/store/index'
 
 interface childType {
@@ -56,17 +49,13 @@ export default defineComponent({
       default: ''
     }
   },
-  setup(props) {
+  setup() {
     // 是否只有一个孩子
     const onlyOneChild = ref()
     const store = useStore()
-
-    // 析构获取 props 属性 basePath
-    const basePath = toRef(props, 'basePath')
     const lang = computed(() => store.getters['settingsModule/getLangState'])
     onMounted(() => {
       // eslint-disable-next-line no-console
-      console.log('basePath.value', basePath.value)
     })
     // methods
     /**
