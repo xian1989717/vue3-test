@@ -5,15 +5,12 @@ import RootStateTypes from '../../types';
 const tabModule: Module<tabStateTypes, RootStateTypes> = {
   namespaced: true,
   state: {
-    tabsOption:[{route:'/home', title:{
-      '/zh-CN': '首页',
-      '/en-US': 'Home Page'
-    },name: 'home',}],
+    tabsOption:[{route:'/home', title:'首页',name: 'home',}],
     currentIndex:'/home',
     breadcrumbList:[]
   },
   mutations: {
-    ADD_TAB: (state: tabStateTypes,data:{route:string,name:string,title:{[key: string]: String}}) => {
+    ADD_TAB: (state: tabStateTypes,data:{route:string,name:string,title:String}) => {
       state.tabsOption.push(data);
     },
     DELETE_TAB: (state: tabStateTypes,route:string) => {
@@ -25,10 +22,7 @@ const tabModule: Module<tabStateTypes, RootStateTypes> = {
     },
     CLEAR_TAB: (state: tabStateTypes) => {
         // 初始化tab
-        state.tabsOption=[{route:'/home',title:{
-          '/zh-CN': '首页',
-          '/en-US': 'Home Page'
-        },name:'home'}];
+        state.tabsOption=[{route:'/home',title:'首页',name:'home'}];
     },
   },
   actions: {

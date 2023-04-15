@@ -8,10 +8,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
     component: layout,
     redirect: '/home',
     meta: {
-      title: {
-        '/zh-CN': '首页',
-        '/en-US': 'Home Page'
-      },
+      title: '首页',
       icon: 'ic ic-homepage-fill'
     },
     children: [
@@ -20,10 +17,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         name: 'home',
         component: () => import(/* webpackChunkName: "home" */ '@/views/Home/home.vue'),
         meta: {
-          title: {
-            '/zh-CN': '首页',
-            '/en-US': 'Home Page'
-          },
+          title: '首页',
           icon: 'ic ic-homepage-fill'
         }
       }
