@@ -11,6 +11,7 @@ const appModule: Module<appStateTypes, RootStateTypes> = {
       withoutAnimation: false,
     },
     device: 'desktop',
+    isNeedReloging: false
   },
   mutations: {
     toggle_sidebar: (state: appStateTypes) => {
@@ -31,6 +32,9 @@ const appModule: Module<appStateTypes, RootStateTypes> = {
     },
     toggle_device: (state, device) => {
       state.device = device
+    },
+    set_is_need_relogin:(state: appStateTypes, val: Boolean)=>{
+      state.isNeedReloging = val
     }
   },
   actions: {
@@ -53,6 +57,9 @@ const appModule: Module<appStateTypes, RootStateTypes> = {
     },
     getDeviceState(state:appStateTypes) {
       return state.device;
+    },
+    getIsNeedReloging(state:appStateTypes){
+      return state.isNeedReloging;
     }
   },
 };

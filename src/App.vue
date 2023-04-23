@@ -31,11 +31,21 @@ onMounted(() => {
   // store.dispatch('permissionModule/getPermissions')
 })
 resizeHeight()
+
+
 const locale = computed(() => {
   const langState = store.getters['settingsModule/getLangState']
   const local = langState === '/zh-CN' ? zhLocale : enLocale
   return local
 })
+
+const saveState = () => {
+  store.commit('appModule/set_is_need_relogin', true)
+  // localStorage.setItem('state', JSON.stringify(this.$store.state.base))
+  // localStorage.setItem('permission', JSON.stringify(this.$store.state.permission))
+}
+
+window.addEventListener('unload', saveState)
 </script>
 
 <style>

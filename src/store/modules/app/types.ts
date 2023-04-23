@@ -3,6 +3,7 @@ export default interface appStateTypes {
         opened:boolean,
         withoutAnimation:boolean
     }
-    device: String
+    device: String,
+    isNeedReloging:Boolean
   // eslint-disable-next-line semi
   }

@@ -1,6 +1,10 @@
 import qs from 'qs';
 import request from '@/utils/request';
 
+interface DynamicRoutesObj { 
+  tenantId:number
+}
+
 const loginApi={
   userLogin: '/api/auth/oauth/token',
   userRegister:'/api/auth/user/register',
@@ -153,7 +157,7 @@ class Service{
     })
   }
 
-  static getDynamicRoutes(data: object){
+  static getDynamicRoutes(data: DynamicRoutesObj){
     return request({
       url:loginApi.dynamicRoutes,
       method:'GET',

@@ -116,7 +116,7 @@ const permissionModule: Module<permissionStateTypes, RootStateTypes> = {
   },
   getters: {
     getAccessRoutes(state:permissionStateTypes) {
-      return state.routes;
+      return state.accessRoutes;
     },
     authedRoutes(state:permissionStateTypes){
       return state.authedRoutes;

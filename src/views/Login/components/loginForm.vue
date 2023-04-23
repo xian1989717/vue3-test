@@ -50,7 +50,7 @@
 <script lang="ts">
 import { defineComponent, ref, toRefs, reactive } from 'vue'
 import JSEncrypt from 'jsencrypt/bin/jsencrypt.min.js'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { encrypt } from '@/utils/aes' // aes 密码加密
 import { useStore } from '@/store'
@@ -77,7 +77,6 @@ export default defineComponent({
   emits: ['toResetPwd'],
   setup(_props, { emit }) {
     const router = useRouter()
-    const route = useRoute()
     const loginFormRef = ref()
     const registerRef = ref()
     const store = useStore()
@@ -151,7 +150,6 @@ export default defineComponent({
               grant_type: 'captcha'
             }
             const res = await Service.postLogin(data)
-
             const accessToken = res.value || null
             if (accessToken) {
               sessionStorage.setItem('accessToken', accessToken)
@@ -164,17 +162,8 @@ export default defineComponent({
                 tenantId: 1
               })
               store.commit('permissionModule/setAccessRoutes', dynamicRoutes)
-              // 先进行异步路由处理
-              // store.dispatch('permissionModule/getPermissonRoutes', userInfo.data)
-              // store.dispatch('permissionModule/getPermissions')
-              sessionStorage.setItem('auth', 'true')
 
-              if (route.query.redirect) {
-                const path = route.query.redirect
-                router.push({ path: path as string })
-              } else {
-                router.push('/')
-              }
+              router.push('/')
             } else {
               ElMessage({
                 type: 'warning',

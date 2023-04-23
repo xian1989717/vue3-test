@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import { store } from '../store'
 import layout from '../layout/index.vue'
+import Service from '@/api/common'
 // 静态路由
 export const constantRoutes: Array<RouteRecordRaw> = [
   {
@@ -66,6 +67,20 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 
 // 异步路由
 export const asyncRoutes: Array<RouteRecordRaw> = []
+
+// function otherRoutePath(to, next) {
+//   if (!to) {
+//     next('/500');
+//   } else if (to && to.path === '/loginExt') {
+//     store.dispatch('removeLoginExtInfo', {})
+//     next();
+//   } else if (to && to.path && [ '/login', '/404', '/505', '/403', '/forgotpassword','/qrCode/orderSign' ].indexOf(to.path) !== -1) {
+//     next();
+//   } else {
+//     next('/login');
+//   }
+// }
+
 const router = createRouter({
   history: createWebHistory(), // hash模式：createWebHashHistory，history模式：createWebHistory
   scrollBehavior: () => ({
@@ -73,24 +88,40 @@ const router = createRouter({
   }),
   routes: constantRoutes
 })
-router.beforeEach((to, from, next) => {
-  const tabsOption = store.getters['tabModule/getTabsOption']
-  // 判断当前路由中是否已经入栈
-  const flag = tabsOption.findIndex((tab: { route: string }) => tab.route === to.path) > -1
-  if (!flag && !to.meta.hiddenTab) {
-    store.commit('tabModule/ADD_TAB', { route: to.path, title: to.meta.title, name: to.name })
-  }
-  store.commit('tabModule/SET_TAB', to.path)
-  if (sessionStorage.getItem('auth')) {
-    next()
-  } else if (to.path === '/login') {
-    next()
-  } else {
-    next({
-      path: '/login',
-      query: { redirect: to.fullPath }
-    })
+
+router.beforeEach(async (to, from, next) => {
+  const token = sessionStorage.getItem('accessToken')
+  if (token) {
+    if (to.path === '/login') {
+      next({ path: '/home' })
+    }else {
+      const hasRoutes =  store.getters['permissionModule/getAccessRoutes']
+      console.log(hasRoutes.length)
+      if (hasRoutes && hasRoutes.length > 4) {
+        next()
+      } else {
+        try {
+          const dynamicRoutes = await Service.getDynamicRoutes({
+            tenantId: 1
+          })
+          store.commit('permissionModule/setAccessRoutes', dynamicRoutes)
+          next({ ...to, replace: true })
+        } catch (error) {
+          // await store.dispatch('user/resetToken')
+          // Message.error(error || 'Has Error')
+          // next({ path: 'login' })
+          // NProgress.done()
+        }
+      }
+    }
+  }else{
+    if(to.path === '/login'){
+      next()
+    }
+    next({ path: 'login' })
   }
 })
+
+
 
 export default router

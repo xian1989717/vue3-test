@@ -31,7 +31,6 @@ export default defineComponent({
     const showLogo = computed(() => store.state.settingsModule.sideBarLogo)
     const routes = computed(() => store.state.permissionModule.accessRoutes)
     const activeMenu = computed(() => store.getters['tabModule/getCurrentIndex'])
-    console.log(routes.value)
     onMounted(() => {
       const routePath = route.path
       store.commit('tabModule/SET_TAB', routePath)
