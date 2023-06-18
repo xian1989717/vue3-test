@@ -1,17 +1,7 @@
 <template>
   <section class="app-main">
-    <el-tabs id="Tabs"
-      v-model="currentIndex"
-      type="card"
-      closable
-      @tab-click="clickTab"
-      @tab-remove="removeTab">
-      <el-tab-pane
-        v-for="item in tabsOption"
-        :key="item.route"
-        :closable="item.route !== '/home'"
-        :label="item.title[lang]"
-        :name="item.route" />
+    <el-tabs id="Tabs" v-model="currentIndex" type="card" closable @tab-click="clickTab" @tab-remove="removeTab">
+      <el-tab-pane v-for="item in tabsOption" :key="item.route" :closable="item.route !== '/home'" :label="item.title[lang]" :name="item.route" />
     </el-tabs>
     <router-view v-if="$route.meta.keepAlive" v-slot="{ Component }">
       <transition name="fade" mode="out-in">
@@ -86,7 +76,7 @@ export default defineComponent({
   width: 100%;
   position: relative;
   overflow: hidden;
-  background-color: white;
+  background-color: #ecf0f6;
 }
 .fixed-header + .app-main {
   padding-top: 50px;

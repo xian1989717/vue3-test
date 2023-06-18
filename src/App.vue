@@ -32,7 +32,6 @@ onMounted(() => {
 })
 resizeHeight()
 
-
 const locale = computed(() => {
   const langState = store.getters['settingsModule/getLangState']
   const local = langState === '/zh-CN' ? zhLocale : enLocale
@@ -53,7 +52,6 @@ window.addEventListener('unload', saveState)
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 .element-plus-logo {
