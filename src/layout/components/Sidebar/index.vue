@@ -30,6 +30,7 @@ export default defineComponent({
     const isCollapse = computed(() => !store.getters['appModule/getSidebarState'])
     const showLogo = computed(() => store.state.settingsModule.sideBarLogo)
     const routes = computed(() => store.state.permissionModule.accessRoutes)
+    console.log(routes.value)
     const activeMenu = computed(() => store.getters['tabModule/getCurrentIndex'])
     onMounted(() => {
       const routePath = route.path

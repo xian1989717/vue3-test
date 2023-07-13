@@ -158,10 +158,10 @@ export default defineComponent({
               if (userInfo.data) {
                 store.commit('permissionModule/SET_OTH_USER_INFO', userInfo.data)
               }
-              const dynamicRoutes = await Service.getDynamicRoutes({
-                tenantId: 1
-              })
-              store.commit('permissionModule/setAccessRoutes', dynamicRoutes)
+              // const dynamicRoutes = await Service.getDynamicRoutes({
+              //   tenantId: 1
+              // })
+              // store.commit('permissionModule/setAccessRoutes', constantRoutes)
 
               router.push('/')
             } else {

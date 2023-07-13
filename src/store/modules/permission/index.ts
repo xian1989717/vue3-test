@@ -41,40 +41,6 @@ const permissionModule: Module<permissionStateTypes, RootStateTypes> = {
     }
   },
   actions: {
-    // 异步接口请求，动态添加路由
-     getPermissonRoutes({ commit },payload:any) {
-      // api request
-      const data={
-        roleName:payload.roleName
-      }
-      // 后端根据角色名称，查询授权菜单
-      Service.postAuthPermission(data).then(res=>{
-        const {authedRoutes}=res.data;
-        commit('setAuthedRoutes', authedRoutes);
-               // 过滤只显示授权菜单
-        const accessedRoutes: RouteRecordRaw[]=[]
-
-        for(const path of authedRoutes){
-          for (const item of asyncRoutes){
-            if(item.path===path){
-
-              accessedRoutes.push(item);
-            }
-          }
-        }
-        // 动态添加路由  vue-router4.x 暂时没有addRoutes
-        router.isReady().then(()=>{
-          accessedRoutes.forEach((route: RouteRecordRaw)=>{
-            const routeName: any = route.name;
-            if (!router.hasRoute(routeName)) {
-              router.addRoute(route);
-            }
-          });
-          router.options.routes = constantRoutes.concat(asyncRoutes);
-          commit('setAccessRoutes', accessedRoutes);
-        });
-      })
-    },
     getPermissions({ commit }){
         // 后端根据角色名称，查询授权菜单
         Service.postPermissions({}).then(res=>{

@@ -62,15 +62,10 @@ export default defineComponent({
      * @description 展示只有一个孩子的情况
      */
     const hasOneShowingChild = (children: childType[] = [], parent: any) => {
-      // RouteRecordRaw 只能在meta中配置额外属性，过滤是否展示路由；
-      // if (children) {
       const showingChildren = children.filter((item) => {
-        // 如果meta 配置隐藏该路由，则返回false;
-
         if (item?.meta?.hidden) {
           return false
         }
-        //
         onlyOneChild.value = item
         return true
       })
@@ -88,21 +83,11 @@ export default defineComponent({
 
       return false
     }
-    // const resolvePath = (routePath:string) => {
-    //   if (isExternal(routePath)) {
-    //     return routePath;
-    //   }
-    //   if (isExternal(basePath.value)) {
-    //     return basePath.value;
-    //   }
-    //   return path.resolve(basePath.value, routePath);
-    // };
 
     return {
       onlyOneChild,
       hasOneShowingChild,
       lang
-      // resolvePath,
     }
   }
 })

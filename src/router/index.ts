@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import { store } from '../store'
 import layout from '../layout/index.vue'
-import Service from '@/api/common'
 // 静态路由
 export const constantRoutes: Array<RouteRecordRaw> = [
   {
@@ -19,6 +18,34 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "home" */ '@/views/Home/home.vue'),
         meta: {
           title: '首页',
+          icon: 'ic ic-homepage-fill'
+        }
+      }
+    ]
+  },
+  {
+    path: '/',
+    component: layout,
+    meta: {
+      title: '系统设置',
+      icon: 'ic ic-homepage-fill'
+    },
+    children: [
+      {
+        path: '/accountManagement',
+        name: 'accountManagement',
+        component: () => import('@/views/systemSettings/accountManagement/index.vue'),
+        meta: {
+          title: '账号设置',
+          icon: 'ic ic-homepage-fill'
+        }
+      },
+      {
+        path: '/roleManagement',
+        name: 'roleManagement',
+        component: () => import( '@/views/systemSettings/roleManagement/index.vue'),
+        meta: {
+          title: '角色设置',
           icon: 'ic ic-homepage-fill'
         }
       }
@@ -101,10 +128,10 @@ router.beforeEach(async (to, from, next) => {
         next()
       } else {
         try {
-          const dynamicRoutes = await Service.getDynamicRoutes({
-            tenantId: 1
-          })
-          store.commit('permissionModule/setAccessRoutes', dynamicRoutes)
+          // const dynamicRoutes = await Service.getDynamicRoutes({
+          //   tenantId: 1
+          // })
+          store.commit('permissionModule/setAccessRoutes', constantRoutes)
           next({ ...to, replace: true })
         } catch (error) {
           // await store.dispatch('user/resetToken')

@@ -20,16 +20,6 @@ import '@/styles/index.scss'
 
 import '@/mock'
 
-// const roles = localStorage.getItem('role')
-
-// if (roles) {
-//   debugger
-//   // 在挂载路由之前，先进行异步路由处理
-//   store.dispatch('permissionModule/getPermissonRoutes', { roleName: roles })
-// }
-
-// store.dispatch('permissionModule/getRoutes')
-
 // 链式注册插件
 const app = createApp(App).use(store, key).use(router).use(ElementPlus, { locale })
 // 挂载全局方法 isPermission
