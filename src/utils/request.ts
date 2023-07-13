@@ -13,17 +13,12 @@ interface IAxiosData {
   responseType?: ResponseType
 }
 
-// const baseURL = 'http://www.mock.com'
 const axios = Axios.create({
-  baseURL:'http://ylq.yxtdh.cn/test-gis',
+  baseURL:'http://ylq.yxtdh.cn/test-gis/api',
   timeout: 20000
 })
 // 允许携带cookie
 axios.defaults.withCredentials = true
-// 请求头信息
-// axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'
-// // 默认使用 application/json 形式
-// axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 // 请求拦截器
 axios.interceptors.request.use(
