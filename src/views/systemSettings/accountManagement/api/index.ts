@@ -1,14 +1,6 @@
 import request from '@/utils/request';
+import {FormItem} from '../type'
 
-interface FormItem {
-  userName: string
-  name: string
-  mobile: string
-  isDriver: string
-  enterpriseName: string
-  deptName: string
-  status: string
-}
 
 const accountApi = {
   getPopulation: 'user/employee/front/page',

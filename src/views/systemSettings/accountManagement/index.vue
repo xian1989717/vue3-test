@@ -44,11 +44,25 @@
         </el-form-item>
       </el-form>
     </div>
-    <div>
-      <el-table :data="tableData" style="width: 100%">
+    <div style="margin-top: 16px">
+      <el-table :data="tableData.list" style="width: 100%" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55" />
         <el-table-column prop="userName" label="账号" width="180" />
-        <el-table-column prop="name" label="Name" width="180" />
-        <el-table-column prop="address" label="Address" />
+        <el-table-column prop="name" label="用户姓名" width="180" />
+        <el-table-column prop="mobile" label="手机号码" />
+        <el-table-column prop="enterpriseName" label="所在单位" />
+        <el-table-column prop="deptName" label="部门" />
+        <el-table-column prop="roleName" label="角色名称" />
+        <el-table-column prop="status" label="状态">
+          <template #default="scope">
+            <div>{{ scope.row.status === 2 ? '停用' : '启用' }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="isDriver" label="是否司机">
+          <template #default="scope">
+            <div>{{ scope.row.isDriver === 1 ? '是' : '否' }}</div>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </div>
@@ -58,20 +72,8 @@ import { onMounted, reactive } from 'vue'
 
 import Service from './api'
 
-interface FormItem {
-  userName: string
-  name: string
-  mobile: string
-  isDriver: string
-  enterpriseName: string
-  deptName: string
-  status: string
-}
+import { FormItem, TableData } from './type'
 
-// interface TableItem {
-//   userName: string
-//   name: string
-// }
 let formInline: FormItem = reactive({
   userName: '',
   name: '',
@@ -82,15 +84,22 @@ let formInline: FormItem = reactive({
   status: ''
 })
 
-const tableData: any = reactive([])
-
-onMounted(() => {})
+const tableData: TableData = reactive({
+  list: []
+})
 
 const getList = async (data: FormItem) => {
   const res = await Service.getList(data)
-  tableData.length = 0
-  tableData.push(...res.list)
+  tableData.list = []
+  tableData.list.push(...res.list)
 }
+
+onMounted(() => {
+  const data: FormItem = {
+    ...formInline
+  }
+  getList(data)
+})
 
 const onSubmit = () => {
   const data: FormItem = {
@@ -109,6 +118,9 @@ const resetForm = () => {
     deptName: '',
     status: ''
   }
+}
+const handleSelectionChange = (data: any) => {
+  console.log(data)
 }
 </script>
 

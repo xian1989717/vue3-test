@@ -6,14 +6,14 @@ interface DynamicRoutesObj {
 }
 
 const loginApi={
-  userLogin: '/api/auth/oauth/token',
-  userRegister:'/api/auth/user/register',
-  sendCaptcha:'/api/auth/email/sendCaptcha',
-  forgetPassword:'/api/auth/email/forgot-password',
-  resetPassword:`/api/auth/user/reset-password`,
-  permissionRoutes:'/api/auth/permission/routes',
-  userInfo:'/api/user/employee/current',
-  dynamicRoutes:'/api/user/permission/dynamicRoutes'
+  userLogin: '/auth/oauth/token',
+  userRegister:'/auth/user/register',
+  sendCaptcha:'/auth/email/sendCaptcha',
+  forgetPassword:'/auth/email/forgot-password',
+  resetPassword:`/auth/user/reset-password`,
+  permissionRoutes:'/auth/permission/routes',
+  userInfo:'/user/employee/current',
+  dynamicRoutes:'/user/permission/dynamicRoutes'
 }
 
 class Service{
