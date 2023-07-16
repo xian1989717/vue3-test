@@ -44,7 +44,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <div style="margin-top: 16px">
+    <div style="margin-top: 16px; background-color: #ffffff">
       <el-table :data="tableData.list" style="width: 100%" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="userName" label="账号" width="180" />
@@ -64,15 +64,33 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination
+        v-model:current-page="formInline.page"
+        v-model:page-size="formInline.rows"
+        :page-sizes="[10, 20, 50, 100]"
+        :small="small"
+        :disabled="disabled"
+        :background="background"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+        style="justify-content: end; padding: 16px"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, reactive } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 
 import Service from './api'
 
 import { FormItem, TableData } from './type'
+
+const small = ref(false)
+const disabled = ref(false)
+const background = ref(false)
+let total = ref(0)
 
 let formInline: FormItem = reactive({
   userName: '',
@@ -81,7 +99,9 @@ let formInline: FormItem = reactive({
   isDriver: '',
   enterpriseName: '',
   deptName: '',
-  status: ''
+  status: '',
+  page: 1,
+  rows: 10
 })
 
 const tableData: TableData = reactive({
@@ -92,6 +112,7 @@ const getList = async (data: FormItem) => {
   const res = await Service.getList(data)
   tableData.list = []
   tableData.list.push(...res.list)
+  total = res.total
 }
 
 onMounted(() => {
@@ -116,11 +137,22 @@ const resetForm = () => {
     isDriver: '',
     enterpriseName: '',
     deptName: '',
-    status: ''
+    status: '',
+    page: 1,
+    rows: 10
   }
 }
 const handleSelectionChange = (data: any) => {
   console.log(data)
+}
+
+const handleSizeChange = (val: number) => {
+  formInline.page = val
+  getList(formInline)
+}
+const handleCurrentChange = (val: number) => {
+  formInline.rows = val
+  getList(formInline)
 }
 </script>
 

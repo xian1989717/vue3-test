@@ -5,7 +5,9 @@ export interface FormItem {
   isDriver: string
   enterpriseName: string
   deptName: string
-  status: string
+  status: string,
+  page: number,
+  rows: number
 }
 
 
